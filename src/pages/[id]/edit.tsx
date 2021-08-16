@@ -10,7 +10,7 @@ const fetcher = (url) =>
 const EditPet = () => {
   const router = useRouter()
   const { id } = router.query
-  const { data: pet, error } = useSWR(id ? `/api/pets/${id}` : null, fetcher)
+  const { data: pet, error } = useSWR(id ? `/api/users/${id}` : null, fetcher)
 
   if (error) return <p>Failed to load</p>
   if (!pet) return <p>Loading...</p>

@@ -1,7 +1,11 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../../lib/dbConnect'
-import Pet from '../../../models/Pet'
+import User, { UserResponse } from '../../../models/User'
 
-export default async function handler(req, res) {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<UserResponse>,
+) => {
   const {
     query: { id },
     method,
@@ -12,11 +16,11 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET' /* Get a model by its ID */:
       try {
-        const pet = await Pet.findById(id)
-        if (!pet) {
+        const user = await User.findById(id)
+        if (!user) {
           return res.status(400).json({ success: false })
         }
-        res.status(200).json({ success: true, data: pet })
+        res.status(200).json({ success: true, data: user })
       } catch (error) {
         res.status(400).json({ success: false })
       }
@@ -24,26 +28,26 @@ export default async function handler(req, res) {
 
     case 'PUT' /* Edit a model by its ID */:
       try {
-        const pet = await Pet.findByIdAndUpdate(id, req.body, {
+        const user = await User.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,
         })
-        if (!pet) {
+        if (!user) {
           return res.status(400).json({ success: false })
         }
-        res.status(200).json({ success: true, data: pet })
+        res.status(200).json({ success: true, data: user })
       } catch (error) {
         res.status(400).json({ success: false })
       }
       break
 
-    case 'DELETE' /* Delete a model by its ID */:
+    case 'DELETE':
       try {
-        const deletedPet = await Pet.deleteOne({ _id: id })
-        if (!deletedPet) {
+        const deletedUser = await User.deleteOne({ _id: id })
+        if (!deletedUser) {
           return res.status(400).json({ success: false })
         }
-        res.status(200).json({ success: true, data: {} })
+        res.status(200).json({ success: true })
       } catch (error) {
         res.status(400).json({ success: false })
       }
@@ -54,3 +58,5 @@ export default async function handler(req, res) {
       break
   }
 }
+
+export default handler
