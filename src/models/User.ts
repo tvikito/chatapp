@@ -1,7 +1,6 @@
-import mongoose from 'mongoose'
+import { Document, models, Schema, model, Model } from 'mongoose'
 
-export interface UserData {
-  _id: string
+export interface UserData extends Document {
   name: string
   description: string
 }
@@ -12,7 +11,7 @@ export interface UserResponse {
 }
 
 /* MessageSchema will correspond to a collection in your MongoDB database. */
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema<UserData, Model<UserData>, UserData>({
   name: {
     type: String,
     required: true,
@@ -24,4 +23,4 @@ const UserSchema = new mongoose.Schema({
   },
 })
 
-export default mongoose.models.User || mongoose.model('User', UserSchema)
+export default models.User || model('User', UserSchema)
