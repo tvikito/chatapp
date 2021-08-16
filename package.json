@@ -14,8 +14,10 @@
     "swr": "0.2.2"
   },
   "devDependencies": {
+    "@types/next": "^9.0.0",
     "@types/react": "^17.0.18",
     "@types/styled-components": "^5.1.12",
+    "@zeit/next-typescript": "^1.1.1",
     "eslint": "^7.32.0",
     "eslint-config-next": "^11.1.0",
     "eslint-config-prettier": "^8.3.0",
