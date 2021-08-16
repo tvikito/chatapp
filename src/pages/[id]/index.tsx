@@ -2,39 +2,44 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dbConnect from '../../lib/dbConnect'
-import Pet from '../../models/Pet'
+import User, { UserData } from '../../models/User'
+import { GetServerSideProps } from 'next'
 
-/* Allows you to view pet card info and delete pet card*/
-const PetPage = ({ pet }) => {
+interface Props {
+  user: UserData
+}
+
+/* Allows you to view user card info and delete user card*/
+const UserPage: React.FC<Props> = ({ user }) => {
   const router = useRouter()
   const [message, setMessage] = useState('')
   const handleDelete = async () => {
-    const petID = router.query.id
+    const userId = router.query.id
 
     try {
-      await fetch(`/api/pets/${petID}`, {
+      await fetch(`/api/users/${userId}`, {
         method: 'Delete',
       })
       router.push('/')
     } catch (error) {
-      setMessage('Failed to delete the pet.')
+      setMessage('Failed to delete the user.')
     }
   }
 
   return (
-    <div key={pet._id}>
+    <div key={user._id}>
       <div className="card">
-        <img src={pet.image_url} />
-        <h5 className="pet-name">{pet.name}</h5>
+        {/* <img src={user.image_url} /> */}
+        <h5 className="pet-name">{user.name}</h5>
         <div className="main-content">
-          <p className="pet-name">{pet.name}</p>
-          <p className="owner">Owner: {pet.owner_name}</p>
+          <p className="pet-name">{user.name}</p>
+          {/* <p className="owner">Owner: {user.owner_name}</p> */}
 
           {/* Extra Pet Info: Likes and Dislikes */}
-          <div className="likes info">
+          {/* <div className="likes info">
             <p className="label">Likes</p>
             <ul>
-              {pet.likes.map((data, index) => (
+              {user.likes.map((data, index) => (
                 <li key={index}>{data} </li>
               ))}
             </ul>
@@ -42,14 +47,14 @@ const PetPage = ({ pet }) => {
           <div className="dislikes info">
             <p className="label">Dislikes</p>
             <ul>
-              {pet.dislikes.map((data, index) => (
+              {user.dislikes.map((data, index) => (
                 <li key={index}>{data} </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           <div className="btn-container">
-            <Link href="/[id]/edit" as={`/${pet._id}/edit`}>
+            <Link href="/[id]/edit" as={`/${user._id}/edit`}>
               <button className="btn edit">Edit</button>
             </Link>
             <button className="btn delete" onClick={handleDelete}>
@@ -63,13 +68,15 @@ const PetPage = ({ pet }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await dbConnect()
 
-  const pet = await Pet.findById(params.id).lean()
-  pet._id = pet._id.toString()
+  console.log('param', params)
 
-  return { props: { pet } }
+  const user = await User.findById(params.id).lean()
+  user._id = user._id.toString()
+
+  return { props: { user } }
 }
 
-export default PetPage
+export default UserPage

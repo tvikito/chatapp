@@ -10,14 +10,7 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
 
   const [form, setForm] = useState({
     name: petForm.name,
-    owner_name: petForm.owner_name,
-    species: petForm.species,
-    age: petForm.age,
-    poddy_trained: petForm.poddy_trained,
-    diet: petForm.diet,
-    image_url: petForm.image_url,
-    likes: petForm.likes,
-    dislikes: petForm.dislikes,
+    description: petForm.description,
   })
 
   /* The PUT method edits an existing entry in the mongodb database. */
@@ -25,7 +18,7 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
     const { id } = router.query
 
     try {
-      const res = await fetch(`/api/pets/${id}`, {
+      const res = await fetch(`/api/users/${id}`, {
         method: 'PUT',
         headers: {
           Accept: contentType,
@@ -36,12 +29,12 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
 
       // Throw error with status code in case Fetch API req failed
       if (!res.ok) {
-        throw new Error(res.status)
+        throw new Error(res.status.toString())
       }
 
       const { data } = await res.json()
 
-      mutate(`/api/pets/${id}`, data, false) // Update the local data without a revalidation
+      mutate(`/api/users/${id}`, data, false) // Update the local data without a revalidation
       router.push('/')
     } catch (error) {
       setMessage('Failed to update pet')
@@ -51,7 +44,7 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
   /* The POST method adds a new entry in the mongodb database. */
   const postData = async (form) => {
     try {
-      const res = await fetch('/api/pets', {
+      const res = await fetch('/api/users', {
         method: 'POST',
         headers: {
           Accept: contentType,
@@ -62,12 +55,12 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
 
       // Throw error with status code in case Fetch API req failed
       if (!res.ok) {
-        throw new Error(res.status)
+        throw new Error(res.status.toString())
       }
 
       router.push('/')
     } catch (error) {
-      setMessage('Failed to add pet')
+      setMessage('Failed to add user')
     }
   }
 
@@ -95,11 +88,8 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
 
   /* Makes sure pet info is filled for pet name, owner name, species, and image url*/
   const formValidate = () => {
-    let err = {}
+    let err: any = {}
     if (!form.name) err.name = 'Name is required'
-    if (!form.owner_name) err.owner_name = 'Owner is required'
-    if (!form.species) err.species = 'Species is required'
-    if (!form.image_url) err.image_url = 'Image URL is required'
     return err
   }
 
@@ -116,73 +106,14 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
           required
         />
 
-        <label htmlFor="owner_name">Owner</label>
+        <label htmlFor="description">Description</label>
         <input
           type="text"
           maxLength={20}
-          name="owner_name"
-          value={form.owner_name}
+          name="description"
+          value={form.description}
           onChange={handleChange}
           required
-        />
-
-        <label htmlFor="species">Species</label>
-        <input
-          type="text"
-          maxLength={30}
-          name="species"
-          value={form.species}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor="age">Age</label>
-        <input
-          type="number"
-          name="age"
-          value={form.age}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="poddy_trained">Potty Trained</label>
-        <input
-          type="checkbox"
-          name="poddy_trained"
-          checked={form.poddy_trained}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="diet">Diet</label>
-        <textarea
-          name="diet"
-          maxLength={60}
-          value={form.diet}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="image_url">Image URL</label>
-        <input
-          type="url"
-          name="image_url"
-          value={form.image_url}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor="likes">Likes</label>
-        <textarea
-          name="likes"
-          maxLength={60}
-          value={form.likes}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="dislikes">Dislikes</label>
-        <textarea
-          name="dislikes"
-          maxLength={60}
-          value={form.dislikes}
-          onChange={handleChange}
         />
 
         <button type="submit" className="btn">
