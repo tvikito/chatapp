@@ -1,36 +1,26 @@
+import React from 'react'
 import styled from 'styled-components'
+import ChatBox from '../components/ChatBox'
+import SideBar from '../components/SideBar'
+import StatusBar from '../components/StatusBar'
 
 const App = styled.div`
   display: grid;
   min-height: 100vh;
+  height: 100vh;
   width: 100%;
   margin: 0;
+  grid-template-columns: 3fr 9fr;
+  grid-template-rows: 1fr 11fr;
 `
 
-const Sidebar = styled.div`
-  background-color: blue;
-  display: flex;
-  width: 30%;
-  height: 100%;
-`
-
-const StatusBar = styled.div`
-  background-color: red;
-`
-const Chat = styled.div`
-  background-color: grey;
-`
-
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <>
-      <h1>Chat App</h1>
       <App>
-        <Sidebar>Sidebar</Sidebar>
-        <main>
-          <StatusBar>status</StatusBar>
-          <Chat>chat</Chat>
-        </main>
+        <SideBar />
+        <StatusBar />
+        <ChatBox />
       </App>
     </>
   )
