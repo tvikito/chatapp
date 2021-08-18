@@ -1,10 +1,10 @@
-import mongoose from 'mongoose'
+import * as Mongoose from 'mongoose'
 
 const MONGODB_URI = process.env.MONGODB_URI
 
 if (!MONGODB_URI) {
   throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
+    'Please define the MONGODB_URI environment variable inside .env.local',
   )
 }
 
@@ -19,7 +19,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null }
 }
 
-async function dbConnect() {
+export const dbConnect = async () => {
   if (cached.conn) {
     return cached.conn
   }
@@ -34,7 +34,7 @@ async function dbConnect() {
       useCreateIndex: true,
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = Mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose
     })
   }
@@ -42,4 +42,10 @@ async function dbConnect() {
   return cached.conn
 }
 
-export default dbConnect
+export const dbDisconnect = () => {
+  if (!cached.conn) {
+    return
+  }
+
+  Mongoose.disconnect()
+}
