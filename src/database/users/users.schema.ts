@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { setLastUpdated, sameLastName } from './users.methods'
+import { setLastUpdated, sameName } from './users.methods'
 import { findOneOrCreate, findByAge } from './users.statics'
 import { IUserDocument, IUserModel } from './users.types'
 
@@ -15,7 +15,7 @@ UserSchema.statics.findOneOrCreate = findOneOrCreate
 UserSchema.statics.findByAge = findByAge
 
 UserSchema.methods.setLastUpdated = setLastUpdated
-UserSchema.methods.sameLastName = sameLastName
+UserSchema.methods.sameName = sameName
 
 // export default models.User || model('User', UserSchema)
 export default UserSchema
