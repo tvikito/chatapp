@@ -3,7 +3,6 @@ import LayoutAdmin from '@components/LayoutAdmin'
 import { Provider } from 'next-auth/client'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
-import 'tailwindcss/tailwind.css'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
