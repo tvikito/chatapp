@@ -1,16 +1,22 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'
+import { IUser } from '@database/users/users.types'
 
-const Form = ({ formId, petForm, forNewPet = true }) => {
+interface Props {
+  formId: string
+  user: IUser
+  forNewUser?: boolean
+}
+
+const Form: React.FC<Props> = ({ formId, user, forNewUser = true }) => {
   const router = useRouter()
   const contentType = 'application/json'
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
 
   const [form, setForm] = useState({
-    name: petForm.name,
-    description: petForm.description,
+    name: user.name,
   })
 
   /* The PUT method edits an existing entry in the mongodb database. */
@@ -60,7 +66,7 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
 
       router.push('/')
     } catch (error) {
-      setMessage('Failed to add user')
+      setMessage(`Failed to add user ${error}`)
     }
   }
 
@@ -80,7 +86,7 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
     e.preventDefault()
     const errs = formValidate()
     if (Object.keys(errs).length === 0) {
-      forNewPet ? postData(form) : putData(form)
+      forNewUser ? postData(form) : putData(form)
     } else {
       setErrors({ errs })
     }
@@ -96,22 +102,12 @@ const Form = ({ formId, petForm, forNewPet = true }) => {
   return (
     <>
       <form id={formId} onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">name</label>
         <input
           type="text"
           maxLength={20}
           name="name"
           value={form.name}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          maxLength={20}
-          name="description"
-          value={form.description}
           onChange={handleChange}
           required
         />

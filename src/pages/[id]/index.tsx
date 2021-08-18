@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import dbConnect from '../../lib/dbConnect'
-import User, { UserData } from '../../models/User'
+import Image from 'next/image'
+import { dbConnect } from '../../database/dbConnect'
+import { User } from '../../database/users/users.model'
 import { GetServerSideProps } from 'next'
+import { IUserDocument } from '@database/users/users.types'
 
 interface Props {
-  user: UserData
+  user: IUserDocument
 }
 
 /* Allows you to view user card info and delete user card*/
@@ -32,30 +34,16 @@ const UserPage: React.FC<Props> = ({ user }) => {
         {/* <img src={user.image_url} /> */}
         <h5 className="pet-name">{user.name}</h5>
         <div className="main-content">
-          <p className="pet-name">{user.name}</p>
-          {/* <p className="owner">Owner: {user.owner_name}</p> */}
-
-          {/* Extra Pet Info: Likes and Dislikes */}
-          {/* <div className="likes info">
-            <p className="label">Likes</p>
-            <ul>
-              {user.likes.map((data, index) => (
-                <li key={index}>{data} </li>
-              ))}
-            </ul>
-          </div>
-          <div className="dislikes info">
-            <p className="label">Dislikes</p>
-            <ul>
-              {user.dislikes.map((data, index) => (
-                <li key={index}>{data} </li>
-              ))}
-            </ul>
-          </div> */}
+          <Image
+            src={user.image}
+            alt={`${user.name} avatar`}
+            width={50}
+            height={50}
+          />
 
           <div className="btn-container">
             <Link href="/[id]/edit" as={`/${user._id}/edit`}>
-              <button className="btn edit">Edit</button>
+              Edit
             </Link>
             <button className="btn delete" onClick={handleDelete}>
               Delete
@@ -71,10 +59,10 @@ const UserPage: React.FC<Props> = ({ user }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await dbConnect()
 
-  console.log('param', params)
-
   const user = await User.findById(params.id).lean()
   user._id = user._id.toString()
+  user.createdAt = user.createdAt.toString()
+  user.updatedAt = user.updatedAt.toString()
 
   return { props: { user } }
 }

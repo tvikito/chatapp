@@ -1,19 +1,10 @@
+import { IUser } from '@database/users/users.types'
 import Form from '../components/Form'
 
-const NewPet = () => {
-  const petForm = {
-    name: '',
-    owner_name: '',
-    species: '',
-    age: 0,
-    poddy_trained: false,
-    diet: [],
-    image_url: '',
-    likes: [],
-    dislikes: [],
-  }
+const NewUser = () => {
+  const user = new IUser()
 
-  return <Form formId="add-pet-form" petForm={petForm} />
+  return <Form formId="add-pet-form" user={user} />
 }
 
-export default NewPet
+export default NewUser

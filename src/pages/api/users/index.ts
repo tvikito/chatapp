@@ -1,11 +1,16 @@
+import { dbConnect } from '@database/dbConnect'
+import { User } from '@database/users/users.model'
 import { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from '../../../lib/dbConnect'
-import User, { UserResponse } from '../../../models/User'
+import { getSession } from 'next-auth/client'
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<UserResponse>,
-) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getSession({ req })
+
+  if (!session) {
+    // Not Signed in
+    res.status(401)
+  }
+
   const { method } = req
 
   await dbConnect()
