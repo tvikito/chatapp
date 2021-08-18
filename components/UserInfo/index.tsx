@@ -1,18 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
-
-const StyledUserInfo = styled.div`
-  span {
-    padding-right: 15px;
-  }
-`
 
 const UserInfo = () => {
   return (
-    <StyledUserInfo>
+    <div>
       <span>Matej Vykoukal</span>
       <span>Online</span>
-    </StyledUserInfo>
+    </div>
   )
 }
 
