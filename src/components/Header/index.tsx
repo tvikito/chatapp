@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import Link from 'next/link'
 
