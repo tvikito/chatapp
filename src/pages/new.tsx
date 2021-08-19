@@ -4,7 +4,7 @@ import Form from '../components/Form'
 const NewUser = () => {
   const user = new IUser()
 
-  return <Form formId="add-pet-form" user={user} />
+  return <Form formId="add-user-form" user={user} />
 }
 
 export default NewUser
